@@ -2,14 +2,19 @@ package com.ygj.community.controller;
 
 import com.ygj.community.dto.AccessTokenDTO;
 import com.ygj.community.dto.GithubUser;
+import com.ygj.community.entity.User;
+import com.ygj.community.mapper.UserMapper;
 import com.ygj.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.UUID;
 
 /**
  * @author 十一
@@ -28,8 +33,13 @@ public class AuthorizeColltroller {
     @Value("${github.redirect.uri}")
     private String redirectUri;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @GetMapping("callback")
-    public String callback(@RequestParam(name = "code") String code,@RequestParam(name = "state") String state){
+    public String callback(@RequestParam(name = "code") String code,
+                           @RequestParam(name = "state") String state,
+                           HttpServletResponse response) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setCode(code);
         accessTokenDTO.setClient_id(clientId);
@@ -38,7 +48,23 @@ public class AuthorizeColltroller {
         accessTokenDTO.setState(state);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser user = githubProvider.getUser(accessToken);
-        System.out.println(user.getName());
-        return "index";
+        if (user != null) {
+            User loginUser = new User();
+            String token = UUID.randomUUID().toString();
+            loginUser.setToken(token);
+            loginUser.setAccount_id(String.valueOf(user.getId()));
+            loginUser.setName(user.getName());
+            loginUser.setGmt_create(System.currentTimeMillis());
+            loginUser.setGmt_modify(loginUser.getGmt_create());
+            userMapper.insterUser(loginUser);
+            //写入cookie
+            response.addCookie(new Cookie("token",token));
+            //登录成功写cookie和session
+
+            return "redirect:/";
+        } else {
+            //登录失败,重新登录
+            return "redirect:/";
+        }
     }
 }
