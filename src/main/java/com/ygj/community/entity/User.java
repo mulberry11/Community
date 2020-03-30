@@ -10,8 +10,9 @@ import lombok.Data;
 public class User {
     private int id;
     private String name;
-    private String account_id;
+    private String accountId;
     private String token;
-    private long gmt_create;
-    private long gmt_modify;
+    private long gmtCreate;
+    private long gmtModify;
+    private String avatarUrl;
 }

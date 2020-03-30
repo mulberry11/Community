@@ -1,14 +1,14 @@
-package com.ygj.community.entity;
+package com.ygj.community.dto;
 
-import java.io.Serializable;
+import com.ygj.community.entity.User;
 import lombok.Data;
 
 /**
- * question
- * @author 
+ * @author 十一
+ * @date 2020-03-30 09:19
  */
 @Data
-public class Question implements Serializable {
+public class QuestionDTO {
     private Integer id;
     /**
      * 标题
@@ -49,6 +49,5 @@ public class Question implements Serializable {
      * 标签
      */
     private String tag;
-
-    private static final long serialVersionUID = 1L;
+    private User user;
 }

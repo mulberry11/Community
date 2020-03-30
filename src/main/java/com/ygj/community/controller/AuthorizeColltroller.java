@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
@@ -36,7 +35,7 @@ public class AuthorizeColltroller {
     @Autowired
     private UserMapper userMapper;
 
-    @GetMapping("callback")
+    @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
                            HttpServletResponse response) {
@@ -48,17 +47,18 @@ public class AuthorizeColltroller {
         accessTokenDTO.setState(state);
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser user = githubProvider.getUser(accessToken);
-        if (user != null) {
+        if (user != null && user.getId() != null) {
             User loginUser = new User();
             String token = UUID.randomUUID().toString();
             loginUser.setToken(token);
-            loginUser.setAccount_id(String.valueOf(user.getId()));
+            loginUser.setAccountId(String.valueOf(user.getId()));
             loginUser.setName(user.getName());
-            loginUser.setGmt_create(System.currentTimeMillis());
-            loginUser.setGmt_modify(loginUser.getGmt_create());
+            loginUser.setGmtCreate(System.currentTimeMillis());
+            loginUser.setGmtModify(loginUser.getGmtCreate());
+            loginUser.setAvatarUrl(user.getAvatarUrl());
             userMapper.insterUser(loginUser);
             //写入cookie
-            response.addCookie(new Cookie("token",token));
+            response.addCookie(new Cookie("token", token));
             //登录成功写cookie和session
 
             return "redirect:/";

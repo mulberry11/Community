@@ -1,5 +1,6 @@
 body{
     background-color: #e4e4e4;
+    line-height: 2.428571;
 }
 .main {
     background-color: white;
@@ -8,4 +9,16 @@ body{
 .btn-publsh{
     float: right;
     margin-bottom: 15px;
+}
+.media-object{
+    width: 40px;
+    height: 40px;
+}
+.media {
+    margin-top: 23px;
+}
+.text-desc {
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
 }
