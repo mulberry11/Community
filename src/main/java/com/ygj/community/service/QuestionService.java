@@ -1,5 +1,6 @@
 package com.ygj.community.service;
 
+import com.ygj.community.dto.PaginationDTO;
 import com.ygj.community.dto.QuestionDTO;
 import com.ygj.community.entity.Question;
 import com.ygj.community.entity.User;
@@ -22,17 +23,70 @@ public class QuestionService {
     private UserMapper userMapper;
     @Autowired
     private QuestionMapper questionMapper;
-    public List<QuestionDTO> list() {
-        List<QuestionDTO> questionDTOS=new ArrayList<QuestionDTO>();
-        List<Question> questionList = questionMapper.list();
+
+    public PaginationDTO list(Integer page, Integer size) {
+        PaginationDTO paginationDTO = new PaginationDTO();
+        Integer totalCount = questionMapper.count();
+        paginationDTO.setPagination(totalCount, page, size);
+        if (page < 1) {
+            page = 1;
+        }
+        if (page > paginationDTO.getTotalPage()) {
+            page = paginationDTO.getTotalPage();
+        }
+        //sql查询的初始数=每页数据条数*页码-1
+        Integer offset = size * (page - 1);
+        List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
+        List<Question> questionList = questionMapper.list(offset, size);
         for (Question question :
                 questionList) {
-            User user=userMapper.findById(question.getCreateor());
+            User user = userMapper.findById(question.getCreateor());
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(question,questionDTO);
+            BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        return questionDTOS;
+        paginationDTO.setQuestions(questionDTOS);
+        //拿到总条数
+
+
+        return paginationDTO;
+    }
+
+    public PaginationDTO list(int userId, Integer page, Integer size) {
+        PaginationDTO paginationDTO = new PaginationDTO();
+        Integer totalCount = questionMapper.countByUserId(userId);
+        paginationDTO.setPagination(totalCount, page, size);
+        if (page < 1) {
+            page = 1;
+        }
+        if (page > paginationDTO.getTotalPage()) {
+            page = paginationDTO.getTotalPage();
+        }
+        //sql查询的初始数=每页数据条数*页码-1
+        Integer offset = size * (page - 1);
+        List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
+        List<Question> questionList = questionMapper.listByUserId(userId,offset, size);
+        for (Question question :
+                questionList) {
+            User user = userMapper.findById(question.getCreateor());
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(question, questionDTO);
+            questionDTO.setUser(user);
+            questionDTOS.add(questionDTO);
+        }
+        paginationDTO.setQuestions(questionDTOS);
+        //拿到总条数
+
+
+        return paginationDTO;
+    }
+
+    public QuestionDTO getById(Integer id) {
+        Question question = questionMapper.getById(id);
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question,questionDTO);
+
+        return questionDTO;
     }
 }
