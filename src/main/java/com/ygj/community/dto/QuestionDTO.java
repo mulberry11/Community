@@ -27,7 +27,7 @@ public class QuestionDTO {
     /**
      * 创建者
      */
-    private Integer createor;
+    private Integer creator;
 
     /**
      * 评论数

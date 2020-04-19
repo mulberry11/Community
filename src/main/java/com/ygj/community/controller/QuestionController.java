@@ -1,8 +1,6 @@
 package com.ygj.community.controller;
 
 import com.ygj.community.dto.QuestionDTO;
-import com.ygj.community.entity.Question;
-import com.ygj.community.mapper.QuestionMapper;
 import com.ygj.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

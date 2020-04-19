@@ -13,7 +13,7 @@ import java.util.List;
 public interface QuestionMapper {
     int deleteByPrimaryKey(Integer id);
 
-    @Insert("insert into question (title, description, gmt_create, gmt_modify, createor, comment_count, view_count, like_count, tag) values (#{title}, #{description}, #{gmtCreate},#{gmtModify}, #{createor}, #{commentCount},#{viewCount}, #{likeCount}, #{tag})")
+    @Insert("insert into question (title, description, gmt_create, gmt_modify, creator, comment_count, view_count, like_count, tag) values (#{title}, #{description}, #{gmtCreate},#{gmtModify}, #{creator}, #{commentCount},#{viewCount}, #{likeCount}, #{tag})")
     int insert(Question record);
 
     int insertSelective(Question record);
@@ -33,12 +33,12 @@ public interface QuestionMapper {
     @Select("select count(1) from question")
     Integer count();
 
-    @Select("select * from question where createor=#{userId} limit #{offset},#{size}")
+    @Select("select * from question where creator=#{userId} limit #{offset},#{size}")
     List<Question> listByUserId(@Param("userId") int userId, @Param("offset") Integer offset, @Param("size") Integer size);
 
-    @Select("select count(1) from question where createor=#{userId}")
+    @Select("select count(1) from question where creator=#{userId}")
     Integer countByUserId(@Param("userId") int userId);
 
-    @Select("")
-    Question getById(Integer id);
+    @Select("select * from question where id=#{id}")
+    Question getById(@Param("id") Integer id);
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="UTF-8">
 
 <body>
 <!--头部标签-->
@@ -18,7 +18,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <form class="navbar-form navbar-left">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="搜索问题">
+                        <input th:label="" type="text" class="form-control" placeholder="搜索问题">
                     </div>
                     <button type="submit" class="btn btn-default">搜索</button>
                 </form>
@@ -32,7 +32,7 @@
                             <li><a href="/profile/question">我的问题</a></li>
                             <li><a href="#">消息中心</a></li>
                             <li><a href="#">我的资料</a></li>
-                            <li><a href="#">退出</a></li>
+                            <li><a href="/logout">退出</a></li>
                         </ul>
                     </li>
                     <li th:if="${session.user==null}">

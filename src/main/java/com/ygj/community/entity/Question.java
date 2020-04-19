@@ -27,7 +27,7 @@ public class Question implements Serializable {
     /**
      * 创建者
      */
-    private Integer createor;
+    private Integer creator;
 
     /**
      * 评论数

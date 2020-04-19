@@ -40,7 +40,7 @@ public class QuestionService {
         List<Question> questionList = questionMapper.list(offset, size);
         for (Question question :
                 questionList) {
-            User user = userMapper.findById(question.getCreateor());
+            User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
@@ -69,7 +69,7 @@ public class QuestionService {
         List<Question> questionList = questionMapper.listByUserId(userId,offset, size);
         for (Question question :
                 questionList) {
-            User user = userMapper.findById(question.getCreateor());
+            User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
             questionDTO.setUser(user);
@@ -86,7 +86,8 @@ public class QuestionService {
         Question question = questionMapper.getById(id);
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
-
+        User user = userMapper.findById(question.getCreator());
+        questionDTO.setUser(user);
         return questionDTO;
     }
 }
