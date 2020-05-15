@@ -1,0 +1,34 @@
+spring:
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+  datasource:
+    #数据源类型
+    type: com.alibaba.druid.pool.DruidDataSource
+    #配置驱动
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #链接地址
+    url: jdbc:mysql://localhost:3306/community?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    #用户名
+    username: root
+    #密码
+    password: root
+  thymeleaf:
+    cache: false
+github:
+  client:
+    id: 03721cd4cfe862a86796
+    Secret: 3feaf20ca6188e4ddf692ce18ac6f6fbd817e7c1
+  redirect:
+    uri: http://localhost:8080/callback
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: tk.mybatis.springboot.model
+  mapper-locations: classpath:mapper/*.xml
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

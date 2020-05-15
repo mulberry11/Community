@@ -1,6 +1,8 @@
 package com.ygj.community.controller;
 
-import com.ygj.community.dto.PaginationDTO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.ygj.community.entity.Question;
 import com.ygj.community.entity.User;
 import com.ygj.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +41,9 @@ public class ProfileController {
             model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
         }
-        PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
-        model.addAttribute("pagination",paginationDTO);
+        //PaginationDTO paginationDTO = questionService.list(user.getId(), page, size);
+        PageInfo<Question> questionPage = questionService.list(page, size, user.getId());
+        model.addAttribute("pageInfo",questionPage);
         return "profile";
     }
 }

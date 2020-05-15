@@ -1,18 +1,43 @@
 package com.ygj.community.entity;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
- * @author 十一
- * @date 2020-03-24 19:12
+ * user
+ * @author 
  */
 @Data
-public class User {
-    private int id;
+public class User implements Serializable {
+    /**
+     * 用户id
+
+     */
+    private Integer id;
+
+    /**
+     * 用户名称
+     */
     private String name;
+
     private String accountId;
+
     private String token;
-    private long gmtCreate;
-    private long gmtModify;
+
+    /**
+     * 创建时间
+     */
+    private Long gmtCreate;
+
+    /**
+     * 修改时间
+     */
+    private Long gmtModify;
+
+    /**
+     * 头像
+     */
     private String avatarUrl;
+
+    private static final long serialVersionUID = 1L;
 }

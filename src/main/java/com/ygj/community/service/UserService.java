@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
-    @Autowired
+    @Autowired(required = true)
     private UserMapper userMapper;
 
     public void createOrUpdate(User user) {
@@ -20,7 +20,7 @@ public class UserService {
             //插入
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModify(user.getGmtCreate());
-            userMapper.insterUser(user);
+            userMapper.insert(user);
         }else {
             //更新
             //获取当前时间戳
@@ -28,7 +28,7 @@ public class UserService {
             dbUser.setAvatarUrl(user.getAvatarUrl());
             dbUser.setName(user.getName());
             dbUser.setToken(user.getToken());
-            userMapper.update(dbUser);
+            userMapper.updateByPrimaryKeySelective(dbUser);
         }
     }
 }

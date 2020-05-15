@@ -1,7 +1,7 @@
 package com.ygj.community.mapper;
 
 import com.ygj.community.entity.User;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author 十一
@@ -9,18 +9,20 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface UserMapper {
-    @Insert("insert into user(name,account_id,token,gmt_create,gmt_modify,avatar_url) values(#{name},#{account_id},#{token},#{gmt_create},#{gmt_modify},#{avatar_url})")
-    public void insterUser(@Param("user") User user);
+    int deleteByPrimaryKey(Integer id);
 
-    @Select("select * from user where token=#{token}")
-    User findByToken(@Param("token") String token);
+    int insert(User record);
 
-    @Select("select * from user where id=#{id}")
-    User findById(@Param("id") Integer creator);
+    int insertSelective(User record);
 
-    @Select("select * from user where account_id=#{accountId}")
-    User findByAccountId(@Param("accountId") String accountId);
+    User selectByPrimaryKey(Integer id);
 
-    @Update("update user set name=#{user.name},token=#{user.token},gmt_modify=#{user.gmtModify},avatar_url=#{user.avatarUrl} where id=#{user.id}")
-    void update(@Param("user") User user);
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
+
+    User findByAccountId(String accountId);
+
+    User findByToken(String token);
+
 }

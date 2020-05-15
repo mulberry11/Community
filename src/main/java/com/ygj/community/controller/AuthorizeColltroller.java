@@ -28,7 +28,7 @@ public class AuthorizeColltroller {
     @Autowired(required=true)
     private GithubProvider githubProvider;
 
-    @Autowired
+    @Autowired(required = true)
     private UserService userService;
 
     @Value("${github.client.id}")

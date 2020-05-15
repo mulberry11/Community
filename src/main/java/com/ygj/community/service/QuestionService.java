@@ -1,17 +1,13 @@
 package com.ygj.community.service;
 
-import com.ygj.community.dto.PaginationDTO;
-import com.ygj.community.dto.QuestionDTO;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ygj.community.entity.Question;
-import com.ygj.community.entity.User;
 import com.ygj.community.mapper.QuestionMapper;
 import com.ygj.community.mapper.UserMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author 十一
@@ -20,11 +16,22 @@ import java.util.List;
 @Service
 public class QuestionService {
     @Autowired
-    private UserMapper userMapper;
-    @Autowired
     private QuestionMapper questionMapper;
 
-    public PaginationDTO list(Integer page, Integer size) {
+    public PageInfo<Question> list(Integer page, Integer size,Integer tid){
+        //开始分页
+        PageInfo<Question> selectPage = PageHelper.startPage(page, size).doSelectPageInfo(() -> questionMapper.findQuestion(tid));
+        return selectPage;
+    }
+
+    public Question getById(Integer id) {
+        Question question = questionMapper.findByid(id);
+        return question;
+
+    }
+
+    /*public Page<Question> list(Integer page, Integer size) {
+        Page pghp=new Page();
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalCount = questionMapper.count();
         paginationDTO.setPagination(totalCount, page, size);
@@ -51,9 +58,9 @@ public class QuestionService {
 
 
         return paginationDTO;
-    }
+    }*/
 
-    public PaginationDTO list(int userId, Integer page, Integer size) {
+    /*public PaginationDTO list(int userId, Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalCount = questionMapper.countByUserId(userId);
         paginationDTO.setPagination(totalCount, page, size);
@@ -66,7 +73,7 @@ public class QuestionService {
         //sql查询的初始数=每页数据条数*页码-1
         Integer offset = size * (page - 1);
         List<QuestionDTO> questionDTOS = new ArrayList<QuestionDTO>();
-        List<Question> questionList = questionMapper.listByUserId(userId,offset, size);
+        List<Question> questionList = questionMapper.listByUserId(userId, offset, size);
         for (Question question :
                 questionList) {
             User user = userMapper.findById(question.getCreator());
@@ -80,14 +87,22 @@ public class QuestionService {
 
 
         return paginationDTO;
-    }
+    }*/
 
-    public QuestionDTO getById(Integer id) {
+    /*public QuestionDTO getById(Integer id) {
         Question question = questionMapper.getById(id);
         QuestionDTO questionDTO = new QuestionDTO();
-        BeanUtils.copyProperties(question,questionDTO);
+        BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.findById(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
+    }*/
+
+    public void createOrUpdate(Question question) {
+        if (question.getId() == null) {
+            questionMapper.insert(question);
+        } else {
+            questionMapper.updateByPrimaryKeySelective(question);
+        }
     }
 }

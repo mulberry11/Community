@@ -10,23 +10,15 @@ import lombok.Data;
 @Data
 public class Question implements Serializable {
     private Integer id;
-    /**
-     * 标题
-     */
+
     private String title;
 
-    /**
-     * 内容
-     */
     private String description;
 
     private Long gmtCreate;
 
     private Long gmtModify;
 
-    /**
-     * 创建者
-     */
     private Integer creator;
 
     /**
@@ -46,9 +38,14 @@ public class Question implements Serializable {
     private Integer likeCount;
 
     /**
-     * 标签
+     * 内容
      */
     private String tag;
+
+    /**
+     * 用户
+     */
+    private User user;
 
     private static final long serialVersionUID = 1L;
 }
